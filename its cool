@@ -1,0 +1,82 @@
+@echo off
+color 0A
+
+:MENU
+cls
+echo ============================
+echo    Multi Tool Menu
+echo ============================
+echo.
+echo 1. Bitcoin Mining
+echo 2. Tool 2 (Placeholder)
+echo 3. Tool 3 (Placeholder)
+echo 4. Tool 4 (Placeholder)
+echo.
+set /p option=Choose an option:
+
+if "%option%"=="1" goto BITCOIN_MINING
+if "%option%"=="2" goto TOOL2
+if "%option%"=="3" goto TOOL3
+if "%option%"=="4" goto TOOL4
+
+goto MENU
+
+:BITCOIN_MINING
+cls
+echo ============================
+echo    Bitcoin Mining
+echo ============================
+echo.
+echo Connecting to mining servers...
+timeout /t 2 >nul
+
+echo Scanning IPs...
+timeout /t 1 >nul
+
+for /l %%i in (1,1,10) do (
+    echo Connecting to IP %%i.%%i.%%i.%%i...
+    timeout /t 1 >nul
+)
+
+echo Downloading mining script...
+timeout /t 2 >nul
+echo [====================] 100%% Complete.
+timeout /t 1 >nul
+
+echo Fake Bitcoin mining started!
+timeout /t 2 >nul
+
+echo.
+echo Press any key to return to the menu...
+pause >nul
+goto MENU
+
+:TOOL2
+cls
+echo ============================
+echo    Tool 2 (Placeholder)
+echo ============================
+echo This is a placeholder for tool 2.
+echo Press any key to return to the menu...
+pause >nul
+goto MENU
+
+:TOOL3
+cls
+echo ============================
+echo    Tool 3 (Placeholder)
+echo ============================
+echo This is a placeholder for tool 3.
+echo Press any key to return to the menu...
+pause >nul
+goto MENU
+
+:TOOL4
+cls
+echo ============================
+echo    Tool 4 (Placeholder)
+echo ============================
+echo This is a placeholder for tool 4.
+echo Press any key to return to the menu...
+pause >nul
+goto MENU
