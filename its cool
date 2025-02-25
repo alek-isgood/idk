@@ -33,8 +33,10 @@ timeout /t 2 >nul
 echo Scanning IPs...
 timeout /t 1 >nul
 
+:: Generate realistic IPs (random public IP range)
 for /l %%i in (1,1,10) do (
-    echo Connecting to IP %%i.%%i.%%i.%%i...
+    call :generate_ip
+    echo Connecting to IP %IP%...
     timeout /t 1 >nul
 )
 
@@ -50,6 +52,15 @@ echo.
 echo Press any key to return to the menu...
 pause >nul
 goto MENU
+
+:: Function to generate a random IP
+:generate_ip
+set /a octet1=%random% %% 223 + 1
+set /a octet2=%random% %% 256
+set /a octet3=%random% %% 256
+set /a octet4=%random% %% 256
+set IP=%octet1%.%octet2%.%octet3%.%octet4%
+goto :eof
 
 :TOOL2
 cls
