@@ -1,0 +1,111 @@
+@echo off
+color a
+title HACKING IN PROGRESS...
+mode 1000
+echo Initializing Hack...
+ping 127.0.0.1 -n 2 >nul
+echo Connecting to Secure Network...
+ping 127.0.0.1 -n 2 >nul
+echo Bypassing Firewalls...
+ping 127.0.0.1 -n 2 >nul
+echo.
+echo [WARNING] Unauthorized Access Detected...
+ping 127.0.0.1 -n 2 >nul
+echo.
+
+:: Start fake IP tracking and password cracking
+:start
+set /a A=%random% %% 256
+set /a B=%random% %% 256
+set /a C=%random% %% 256
+set /a D=%random% %% 256
+set /a Pass=%random% %% 9999999 + 1000000
+echo Tracing IP: %A%.%B%.%C%.%D% ...
+echo Attempting Password: %Pass% ...
+ping 127.0.0.1 -n 1 >nul
+
+:: Fake success condition (random chance to "find" password)
+if %random% GTR 30000 goto countdown
+goto start
+
+:: Countdown before "access granted"
+:countdown
+echo.
+echo Accessing Secure Files...
+ping 127.0.0.1 -n 1 >nul
+echo Starting Data Extraction in:
+for /l %%x in (5,-1,1) do (
+    echo %%x...
+    ping 127.0.0.1 -n 2 >nul
+)
+goto found
+
+:: "Access Granted" message + Fake Email Dump
+:found
+echo.
+echo [ACCESS GRANTED] Password Found: H@ckM3_2025!
+echo Tracking Completed. Target IP: %A%.%B%.%C%.%D%
+ping 127.0.0.1 -n 2 >nul
+echo.
+echo Extracting Email Addresses...
+ping 127.0.0.1 -n 2 >nul
+
+:: Realistic Fake Email Extraction with Unique Names
+setlocal enabledelayedexpansion
+for /l %%x in (1,1,10) do (
+    set /a RND1=%random% %% 10000
+    set /a RND2=%random% %% 10000
+    set "Email=user%%x!RND1!!RND2!@gmail.com"
+    echo Found Email: !Email!
+    ping 127.0.0.1 -n 1 >nul
+)
+endlocal
+
+echo.
+echo Extracting Social Media Logins...
+ping 127.0.0.1 -n 2 >nul
+
+:: Realistic Social Media Logins with Unique Usernames and Passwords
+for /l %%x in (1,1,5) do (
+    set /a RND1=%random% %% 10000
+    set /a RND2=%random% %% 10000
+    setlocal enabledelayedexpansion
+    set "FBUser=fb_user%%x!RND1!"
+    set "FBPass=FbPass!RND2!@2025"
+    echo [Facebook] User: !FBUser! | Pass: !FBPass!
+    endlocal
+    ping 127.0.0.1 -n 1 >nul
+)
+
+echo.
+echo [COMPLETE] Data Successfully Extracted!
+echo.
+
+:: Fake Crypto Exchange - Bitcoin Wallet Transaction
+echo Sending Bitcoin Transaction...
+ping 127.0.0.1 -n 2 >nul
+
+:: Generate realistic random BTC amount
+set /a BTCWhole=%random% %% 50 + 1
+set /a BTCFraction=%random% %% 100000
+set BTCAmount=%BTCWhole%.%BTCFraction%
+
+:: Fake wallet update display
+echo.
+echo Fake Bitcoin Wallet Balance: %BTCAmount% BTC
+echo.
+
+:: Create a working pop-up using VBScript that stays open
+(
+echo Set objShell = CreateObject("WScript.Shell")
+echo BTCAmount = Int((50 * Rnd) + 1) ^& "." ^& Int((100000 * Rnd))
+echo objShell.Popup "Transaction Sent! You received " ^& BTCAmount ^& " BTC.", 0, "Transaction Complete", 64
+) > popup.vbs
+
+:: Run the pop-up (STAYS OPEN UNTIL CLOSED)
+start popup.vbs
+
+echo.
+echo Press any key to exit...
+pause >nul
+exit
