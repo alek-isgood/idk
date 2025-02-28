@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #222;
+        }
+        button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+        }
+        button:hover {
+            background: #444;
+        }
+        #urlInput {
+            flex-grow: 1;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+        #settings {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #settings:hover {
+            transform: rotate(90deg);
+        }
+        #settingsMenu {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: #333;
+            border: 1px solid #444;
+            display: none;
+            padding: 10px;
+            z-index: 1;
+        }
+        #settingsMenu label {
+            display: block;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <button onclick="goBack()">&#9664; Back</button>
+    <button onclick="goForward()">Forward &#9654;</button>
+    <button onclick="reload()">Reload</button>
+    <input type="text" id="urlInput" placeholder="Enter URL (e.g., http://example.com)" />
+    <button onclick="navigate()">Go</button>
+    <div id="settings">⚙️</div>
+</div>
+
+<div id="settingsMenu">
+    <label>
+        <input type="checkbox" id="adBlockerToggle" onchange="toggleAdBlocker()">
+        Enable Ad Blocker
+    </label>
+</div>
+
+<iframe id="browser" src="https://www.google.com"></iframe>
+
+<script>
+    const adBlockerEnabled = false; // Placeholder for ad blocker implementation
+
+    function navigate() {
+        const urlInput = document.getElementById('urlInput').value.trim();
+        let url = urlInput;
+
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'http://' + url;
+        }
+
+        document.getElementById('browser').src = url;
+    }
+
+    function goBack() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.history.back();
+    }
+
+    function goForward() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.history.forward();
+    }
+
+    function reload() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.location.reload();
+    }
+
+    document.getElementById('settings').onclick = function() {
+        const settingsMenu = document.getElementById('settingsMenu');
+        settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Function to toggle the ad blocker
+    function toggleAdBlocker() {
+        const adBlockerToggle = document.getElementById('adBlockerToggle');
+        const message = adBlockerToggle.checked ? "Ad Blocker Enabled" : "Ad Blocker Disabled";
+        alert(message);
+        // Additional logic for blocking ads can be implemented here as needed
+    }
+
+    // Close settings menu if clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('#settings')) {
+            const settingsMenu = document.getElementById('settingsMenu');
+            if (settingsMenu.style.display === 'block') {
+                settingsMenu.style.display = 'none';
+            }
+        }
+    };
+
+</script>
+
+</body>
+</html>
