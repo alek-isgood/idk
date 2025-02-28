@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white; /* Set the controls to light background */
+        }
+        button {
+            background: none;
+            border: none;
+            color: black; /* Change button text color for contrast */
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+        }
+        button:hover {
+            background: #444;
+            color: white; /* Change color on hover */
+        }
+        #urlInput {
+            flex-grow: 1;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #ccc; /* Light border color for input */
+            background: #f0f0f0; /* Light background for input */
+            color: black; /* Dark text for input */
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+        #settings {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #settings:hover {
+            transform: rotate(90deg);
+        }
+        #settingsMenu {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: #333;
+            border: 1px solid #444;
+            display: none;
+            padding: 10px;
+            z-index: 1;
+        }
+        #settingsMenu label {
+            display: block;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <button onclick="goBack()">&#9664; Back</button>
+    <button onclick="goForward()">Forward &#9654;</button>
+    <button onclick="reload()">Reload</button>
+    <input type="text" id="urlInput" placeholder="Enter URL (e.g., example.com)" />
+    <button onclick="navigate()">Go</button>
+    <div id="settings">⚙️</div>
+</div>
+
+<div id="settingsMenu">
+    <label>
+        <input type="checkbox" id="adBlockerToggle" onchange="toggleAdBlocker()">
+        Enable Ad Blocker
+    </label>
+    <label>
+        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+        Toggle Dark Theme
+    </label>
+</div>
+
+<iframe id="browser" src="https://www.google.com"></iframe>
+
+<script>
+    const adBlockedSites = ["example.com"]; // List of sites to block for demo purposes
+
+    function navigate() {
+        const urlInput = document.getElementById('urlInput').value.trim();
+        let url = urlInput;
+
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'http://' + url; // Add default protocol if not provided
+        }
+
+        try {
+            document.getElementById('browser').src = url;
+        } catch (error) {
+            alert('Invalid URL. Please try again.'); // Show alert for invalid URLs
+        }
+    }
+
+    function goBack() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.history.back();
+    }
+
+    function goForward() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.history.forward();
+    }
+
+    function reload() {
+        const iframe = document.getElementById('browser');
+        iframe.contentWindow.location.reload();
+    }
+
+    document.getElementById('settings').onclick = function() {
+        const settingsMenu = document.getElementById('settingsMenu');
+        settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+    };
+
+    function toggleAdBlocker() {
+        const adBlockerToggle = document.getElementById('adBlockerToggle');
+        const message = adBlockerToggle.checked ? "Ad Blocker Enabled" : "Ad Blocker Disabled";
+        alert(message);
+        
+        const iframe = document.getElementById('browser');
+        const currentUrl = new URL(iframe.src);
+        if (adBlockerToggle.checked && adBlockedSites.includes(currentUrl.hostname)) {
+            alert("This site is blocked."); // Mock ad-blocking message
+            iframe.src = "about:blank"; // Clear the iframe for a blocked site
+        }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        document.getElementById('controls').classList.toggle('dark-theme');
+        const inputs = document.getElementById('urlInput');
+        
+        if (document.body.classList.contains('dark-theme')) {
+            // Set dark theme styles
+            document.body.style.backgroundColor = '#1e1e1e';
+            document.body.style.color = 'white';
+            document.getElementById('controls').style.background = '#222';
+            inputs.style.background = '#3a3a3a'; 
+            inputs.style.color = 'white'; 
+            inputs.style.border = '1px solid #555';
+        } else {
+            // Reset to light theme styles
+            document.body.style.backgroundColor = 'white';
+            document.body.style.color = 'black';
+            document.getElementById('controls').style.background = 'white';
+            inputs.style.background = '#f0f0f0'; 
+            inputs.style.color = 'black'; 
+            inputs.style.border = '1px solid #ccc';
+        }
+    }
+
+    // Close settings menu if clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('#settings')) {
+            const settingsMenu = document.getElementById('settingsMenu');
+            if (settingsMenu.style.display === 'block') {
+                settingsMenu.style.display = 'none';
+            }
+        }
+    };
+</script>
+
+</body>
+</html>
